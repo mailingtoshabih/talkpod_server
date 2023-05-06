@@ -39,14 +39,16 @@ mongoose.connect("mongodb+srv://alamshabih3:Shaebih8091@cluster0.hyyvg1q.mongodb
 
 const corsOption = {
     credentials: true,
-    origin: ['https://talkpod.onrender.com'],
+    origin: *,
 };
+
+// origin: ['https://talkpod.onrender.com'],
 
 
 
 app.use(cors(corsOption));
-// change below code
-app.use(cors());  
+
+
 app.use(cookieParser());
 app.use(express.json({ limit: '6mb' }));
 app.use("/api/auth", authRoutes);

@@ -39,7 +39,7 @@ mongoose.connect("mongodb+srv://alamshabih3:Shaebih8091@cluster0.hyyvg1q.mongodb
 
 const corsOption = {
     credentials: true,
-    origin: ['https://talkpod.onrender.com/'],
+    origin: ['https://talkpod.onrender.com'],
 };
 
 

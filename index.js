@@ -45,6 +45,8 @@ const corsOption = {
 
 
 app.use(cors(corsOption));
+// change below code
+app.use(cors());  
 app.use(cookieParser());
 app.use(express.json({ limit: '6mb' }));
 app.use("/api/auth", authRoutes);

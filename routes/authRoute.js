@@ -79,22 +79,23 @@ router.post('/activate', (auth_mw), async (req, res) => {
 
     try {
         const { name, pic } = req.body;
-        if (!name && !pic) res.json("Fill all details...");
+//         if (!name && !pic) res.json("Fill all details...");
 
-        const userId = req.user._id;
+//         const userId = req.user._id;
 
-        const user = await userservice.isUserAvailable({ _id: userId });
-        if (!user) res.json("User not available...");
+//         const user = await userservice.isUserAvailable({ _id: userId });
+//         if (!user) res.json("User not available...");
 
-        user.activated = true;
-        user.name = name;
-        user.pic = pic;
+//         user.activated = true;
+//         user.name = name;
+//         user.pic = pic;
 
-        user.save()
-            .then(()=>{
-            res.send("user")
-            })
-            .catch((e)=>res.send(e.message));
+//         user.save()
+//             .then(()=>{
+//             res.send("user")
+//             })
+//             .catch((e)=>res.send(e.message));
+        res.json({name});
     }
     catch (exc) {
         res.json(exc.message);

@@ -90,11 +90,11 @@ router.post('/activate', (auth_mw), async (req, res) => {
         user.name = name;
         user.pic = pic;
 
-        await user.save()
+        user.save()
             .then(()=>{
-            res.send("user")
+            res.send({"user"})
             })
-            .catch((e)=>console.log(e.message));
+            .catch((e)=>res.send(e.message));
     }
     catch (exc) {
         res.json(exc.message);

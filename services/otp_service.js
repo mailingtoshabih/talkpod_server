@@ -36,9 +36,7 @@ class OtpService {
 
 
     async verifyOtp(otp, hash) {
-
-        return await bcrypt.compare(otp, hash)
-
+        return await bcrypt.compare(otp, hash) 
     }
 }
 

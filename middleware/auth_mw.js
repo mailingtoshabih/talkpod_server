@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
 
         req.user = userData;
         
-        res.json({req.user});
+        res.json({userData});
         
         next();
     }

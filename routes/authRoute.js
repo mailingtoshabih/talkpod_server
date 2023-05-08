@@ -92,7 +92,7 @@ router.post('/activate', (auth_mw), async (req, res) => {
 
         user.save()
             .then(()=>{
-            res.send({"user"})
+            res.send("user")
             })
             .catch((e)=>res.send(e.message));
     }

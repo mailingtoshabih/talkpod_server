@@ -43,7 +43,7 @@ const corsOption = {
 };
 
 app.use(cors(corsOption));
-app.set("trust proxy",1); 
+
 
 
 app.use(cookieParser());

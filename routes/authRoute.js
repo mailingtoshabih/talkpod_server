@@ -74,8 +74,8 @@ router.post('/verifyotp', async (req, res) => {
 
 
 
-
-router.post('/activate', (auth_mw), async (req, res) => {
+//  (auth_mw),
+router.post('/activate', async (req, res) => {
 
     try {
         const { name, pic } = req.body;

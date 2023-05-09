@@ -42,9 +42,10 @@ const corsOption = {
     origin: ['https://talkpod.onrender.com'],
 };
 
-
-
 app.use(cors(corsOption));
+app.set("trust proxy",1); 
+
+
 app.use(cookieParser());
 app.use(express.json({ limit: '6mb' }));
 app.use("/api/auth", authRoutes);

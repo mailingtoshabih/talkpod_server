@@ -75,23 +75,22 @@ router.post('/verifyotp', async (req, res) => {
 
 
 //  (auth_mw),
-router.post('/activate', async (req, res) => {
+router.post('/activate',(auth_mw), async (req, res) => {
 
     try {
         const { name, pic } = req.body;
         if (!name && !pic) res.json("Fill all details...");
 
-//         const userId = req.user._id;
-        const userId = req.user;
+        const userId = req.user._id;
+        
+        const user = await userservice.isUserAvailable({ _id: userId });
+        if (!user) res.json("User not available...");
 
-//         const user = await userservice.isUserAvailable({ _id: userId });
-//         if (!user) res.json("User not available...");
+        user.activated = true;
+        user.name = name;
+        user.pic = pic;
 
-//         user.activated = true;
-//         user.name = name;
-//         user.pic = pic;
-
-//         await user.save()
+        await user.save()
         res.json({userId})
         
     }

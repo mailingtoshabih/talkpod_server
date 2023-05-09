@@ -44,7 +44,7 @@ const corsOption = {
 
 app.use(cors(corsOption));
 app.set("trust proxy",1); 
-
+app.use(express.bodyParser());
 
 app.use(cookieParser());
 app.use(express.json({ limit: '6mb' }));

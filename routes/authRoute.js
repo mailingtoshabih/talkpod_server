@@ -79,7 +79,7 @@ router.post('/activate', async (req, res) => {
 
     try {
         const { name, pic } = req.body;
-        res.json({name});
+        res.json({req.user})
         
 //         if (!name && !pic) res.json("Fill all details...");
 //         else{

@@ -30,47 +30,21 @@ router.post('/sendotp', async (req, res) => {
 
 
 // Otp in string may persist some problem in future
-router.post('/verifyotp', async (req, res) => {
+router.post('/signup', async (req, res) => {
     try {
-        const { Otp, Hash, Phone } = req.body;
-        if (!Phone || !Otp || !Hash) res.send("Please fill required fields");
+        const { email } = req.body;
+        if (!email) res.send("Please fill required fields");
 
-        const isValid = await otpservice.verifyOtp(Otp, Hash);
-        if (!isValid) res.json("Invalid Otp");
 
-        let user = await userservice.isUserAvailable({ phone: Phone });
+        let user = await userservice.isUserAvailable({ email: email });
         let newuser;
 
         if (user) res.json("Already have an account...");
         else {
-            newuser = await userservice.createUser({ phone: Phone });
+            newuser = await userservice.createUser({ email: email });
+            newuser && res.json(newuser);
         }
 
-        const { accessToken, refreshToken } = tokenservice.generateTokens(
-            {
-                "_id": newuser._id,
-                "activated": false
-            });
-
-        await tokenservice.storeRefreshToken(refreshToken, newuser._id);
-
-        res.cookie('accessToken', accessToken, {
-            maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
-            sameSite: "none",
-			secure: false,
-			domain: "https://talkpod.onrender.com",
-        })
-
-        res.cookie('refreshToken', refreshToken, {
-            maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
-            sameSite: "none",
-			secure: false,
-			domain: "https://talkpod.onrender.com",
-        })
-
-        res.json({ newuser, auth: true });
     }
     catch (err) {
         res.json(err.messsage);
@@ -80,30 +54,27 @@ router.post('/verifyotp', async (req, res) => {
 
 
 
-//  (auth_mw),
+
+//  authmw
 router.post('/activate', async (req, res) => {
 
     try {
-        const { name, pic } = req.body;
-        const h = req.user;
-        res.json({h})
-        
-//         if (!name && !pic) res.json("Fill all details...");
-//         else{
-//             const userId = req.user._id;
+        const { email, name, pic } = req.body;
+        if (!name || !pic || !email) res.json("Fill all details...");
 
-//             const user = await userservice.isUserAvailable({ _id: userId });
-//             if (!user) res.json("User not available...");
-//             else{
-//                 user.activated = true;
-//                 user.name = name;
-//                 user.pic = pic;
 
-//                 await user.save()
-//                 res.json({userId})
-//             }
-//         }
-        
+        const user = await userservice.isUserAvailable({ email: email });
+        if (!user) res.json("User not available...");
+
+        user.activated = true;
+        user.name = name;
+        user.pic = pic;
+
+        await user.save()
+            .then(() => {
+                res.json({ user })
+            })
+            .catch((e) => console.log(e.message));
     }
     catch (exc) {
         res.json(exc.message);
@@ -134,18 +105,12 @@ router.get("/refresh", async (req, res) => {
 
             res.cookie('accessToken', accessToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true,
-                sameSite: "none",
-			    secure: false,
-			    domain: "https://talkpod.onrender.com",
+                httpOnly: true
             })
 
             res.cookie('refreshToken', refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 30,
-                httpOnly: true,
-                sameSite: "none",
-			    secure: false,
-			    domain: "https://talkpod.onrender.com",
+                httpOnly: true
             })
 
             res.json({ user, auth: true })
@@ -172,14 +137,14 @@ router.get("/refresh", async (req, res) => {
 
 router.get("/logout", async (req, res) => {
 
-    const {refreshToken} = req.cookies;
+    const { refreshToken } = req.cookies;
     try {
         await tokenservice.deleteToken(refreshToken);
 
         res.clearCookie('accessToken');
         res.clearCookie('refreshToken');
 
-        res.json({ user : null, auth : false })
+        res.json({ user: null, auth: false })
     }
     catch (exc) {
         res.json(exc.message);

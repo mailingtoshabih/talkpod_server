@@ -14,6 +14,7 @@ module.exports = async (req, res, next) => {
         if (!userData) throw new Error();
 
         req.user = userData;
+        
         next();
     }
     catch (exc) {

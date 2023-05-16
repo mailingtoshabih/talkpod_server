@@ -29,7 +29,27 @@ router.post('/sendotp', async (req, res) => {
 
 
 
-// Otp in string may persist some problem in future
+router.post('/login', async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) res.send("Please fill required fields");
+
+        let user = await userservice.isUserAvailable({ email: email });
+       
+        if (!user) res.json("Not have an account...");
+        else {
+            res.json({user})
+        }
+    }
+    catch (err) {
+        res.json(err.messsage);
+    }
+})
+
+
+
+
+
 router.post('/signup', async (req, res) => {
     try {
         const { email } = req.body;

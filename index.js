@@ -9,7 +9,7 @@ const ACTIONS = require('./action');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'https://talkpod.onrender.com',
+        origin: 'http://localhost:5173',
         methods: ['GET', 'POST']
     }
 })
@@ -39,7 +39,7 @@ mongoose.connect("mongodb+srv://alamshabih3:Shaebih8091@cluster0.hyyvg1q.mongodb
 
 const corsOption = {
     credentials: true,
-    origin: ['https://talkpod.onrender.com'],
+    origin: ['http://localhost:5173'],
 };
 
 
@@ -72,8 +72,7 @@ const socketUserMapping = {
 
 
 io.on('connection', (socket) => {
-    console.log(socket.id);
-
+    
     socket.on(ACTIONS.JOIN, ({ roomId, user }) => {
         socketUserMapping[socket.id] = user;
 
@@ -151,7 +150,7 @@ io.on('connection', (socket) => {
         const clients = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
         clients.forEach((clientId) => {
             if (clientId !== socket.id) {
-                console.log('mute info');
+                // console.log('mute info');
                 io.to(clientId).emit(ACTIONS.MUTE_INFO, {
                     userId,
                     isMute,
@@ -178,7 +177,7 @@ io.on('connection', (socket) => {
             clients.forEach( (clientId) => {
                 io.to(clientId).emit(ACTIONS.REMOVE_PEER, {
                     peerId : socket.id,
-                    userId : socketUserMapping[socket.id]?.id,
+                    userId : socketUserMapping[socket.id]?._id,
                 });
 
                 // socket.emit(ACTIONS.REMOVE_PEER, {

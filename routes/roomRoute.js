@@ -16,13 +16,15 @@ const Refresh = require('../models/Refreshmodel');
 
 router.post('/createroom', async (req, res) => {
 
-    const {_id, roomTopic, roomType} = req.body;
+    const {_id, roomTopic, roomType, roomDesc, pic} = req.body;
 
     try {
 
         const room = await roomservice.createRoom({
             roomTopic,
             roomType,
+            roomDesc,
+            pic,
             ownerId : _id
         })
 

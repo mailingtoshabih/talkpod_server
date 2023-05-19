@@ -24,6 +24,13 @@ const roomSchema = mongoose.Schema(
                 }
             ],
             required : false,
+        },
+        roomDesc : {
+            type : String
+        },
+        pic : {
+            type : String,
+            required : true
         }
     }, 
     { timestamps: true }

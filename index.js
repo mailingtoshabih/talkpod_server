@@ -9,7 +9,7 @@ const ACTIONS = require('./action');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'https://talkpod-server.onrender.com',
+        origin: 'https://talkpod.onrender.com',
         methods: ['GET', 'POST']
     }
 })
@@ -39,7 +39,7 @@ mongoose.connect("mongodb+srv://alamshabih3:Shaebih8091@cluster0.hyyvg1q.mongodb
 
 const corsOption = {
     credentials: true,
-    origin: ['https://talkpod-server.onrender.com'],
+    origin: ['https://talkpod.onrender.com'],
 };
 
 
